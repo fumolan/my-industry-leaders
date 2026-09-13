@@ -3,57 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A股行业龙头全景 · 90行业TOP5</title>
+<title>A股市场地图 · 90行业轮动 × 龙头TOP5 × 上市退市</title>
 <style>
 :root{--bg:#0f1420;--card:#1a2233;--card2:#212b40;--text:#e8ecf4;--text2:#8b96ab;
 --up:#ff5b5b;--down:#3dd68c;--accent:#4d9fff;--border:#2a3550;--gold:#ffc53d}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
-.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10}
-.brand{font-size:19px;font-weight:700}
+.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--text2)}
+.sgn{font-weight:600}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:20}
+.brand{font-size:18px;font-weight:700}
 .brand small{color:var(--text2);font-weight:400;font-size:12px;margin-left:8px}
 .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-input#search{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:20px;padding:8px 16px;width:230px;font-size:13px;outline:none}
+input#search{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:20px;padding:8px 16px;width:210px;font-size:13px;outline:none}
 input#search:focus{border-color:var(--accent)}
 select{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 10px;font-size:13px}
-.stats{display:flex;gap:20px;padding:16px 24px;flex-wrap:wrap}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 20px}
-.stat .k{font-size:12px;color:var(--text2)}
-.stat .v{font-size:20px;font-weight:700;margin-top:2px}
-.stat .v.gold{color:var(--gold)}
-.main{max-width:1280px;margin:0 auto;padding:0 20px 40px}
-.ind-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:hidden}
-.ind-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;flex-wrap:wrap;gap:8px}
+.main{max-width:1280px;margin:0 auto;padding:16px 20px 40px}
+section{margin-bottom:22px}
+h2.sec{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+h2.sec::before{content:'';width:4px;height:16px;background:var(--accent);border-radius:2px}
+/* 总览 */
+.idxbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.idx{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
+.idx .k{font-size:12px;color:var(--text2)}
+.idx .v{font-size:20px;font-weight:700;margin-top:2px}
+.idx .c{font-size:13px;font-weight:600}
+/* 热力网格 */
+.heatmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px}
+.cell{border-radius:8px;padding:8px 6px;text-align:center;cursor:default;transition:.15s;border:1px solid var(--border)}
+.cell:hover{transform:scale(1.06);z-index:2}
+.cell .n{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cell .v{font-size:13px;font-weight:700;margin-top:2px}
+/* 轮动榜 */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.panel h3{font-size:13px;color:var(--text2);font-weight:500;margin-bottom:8px}
+.row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;border-bottom:1px dashed var(--border)}
+.row:last-child{border-bottom:none}
+.row .nm{display:flex;gap:8px;align-items:center}
+.row .rk{color:var(--text2);font-size:11px;width:24px}
+.row .rc{font-size:11px;padding:1px 6px;border-radius:8px}
+.rc.uprank{background:#3a2a12;color:var(--gold)}
+.rc.downrank{background:#12283a;color:var(--accent)}
+/* IPO/退市 */
+.ipo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.chip{display:inline-flex;gap:6px;align-items:center;background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:4px 12px;margin:3px;font-size:12px}
+.chip b{font-weight:600}
+.empty{color:var(--text2);font-size:13px;padding:8px 0}
+/* 行业TOP5 */
+.ind-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.ind-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;flex-wrap:wrap;gap:8px}
 .ind-head:hover{background:var(--card2)}
-.ind-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px}
-.ind-title .rank{background:var(--accent);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
-.ind-meta{display:flex;gap:18px;font-size:13px;color:var(--text2);align-items:center;flex-wrap:wrap}
+.ind-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px}
+.ind-title .rank{background:var(--accent);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px}
+.ind-meta{display:flex;gap:16px;font-size:13px;color:var(--text2);align-items:center;flex-wrap:wrap}
 .ind-meta b{color:var(--text)}
-.badge{font-size:12px;padding:2px 10px;border-radius:10px}
-.badge.n{background:var(--card2);color:var(--text2)}
+.badge{font-size:12px;padding:2px 10px;border-radius:10px;background:var(--card2);color:var(--text2)}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:var(--card2);color:var(--text2);font-weight:500;padding:8px 14px;text-align:right;position:sticky}
+th{background:var(--card2);color:var(--text2);font-weight:500;padding:8px 14px;text-align:right}
 th:first-child,td:first-child{text-align:left;padding-left:18px}
 td{padding:8px 14px;text-align:right;border-top:1px solid var(--border)}
 td.l{text-align:left}
 tr:hover td{background:var(--card2)}
-.up{color:var(--up)} .down{color:var(--down)}
 .arrow{color:var(--text2);transition:.2s;display:inline-block;margin-left:6px}
 .open .arrow{transform:rotate(90deg)}
 .hidden{display:none}
 .footer{text-align:center;padding:24px;color:var(--text2);font-size:12px}
-.footer a{color:var(--accent)}
-@media(max-width:720px){
-  .stats{gap:8px;padding:12px}
-  .stat{flex:1;padding:8px 12px}.stat .v{font-size:15px}
-  th,td{padding:6px 8px;font-size:12px}
-  .ind-head{padding:12px}
-}
+@media(max-width:720px){.duo{grid-template-columns:1fr}.idxbar{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <div class="brand">🏭 A股行业龙头全景<small>同花顺90个一级行业 · 每行业TOP5</small></div>
+  <div class="brand">🗺️ A股市场地图<small>90行业轮动 · 上市退市 · 龙头TOP5</small></div>
   <div class="controls">
     <input id="search" placeholder="🔍 搜索行业 / 股票 / 代码">
     <select id="sortby">
@@ -63,28 +84,104 @@ tr:hover td{background:var(--card2)}
     </select>
   </div>
 </div>
-<div class="stats" id="stats"></div>
-<div class="main" id="list"></div>
-<div class="footer">数据: 同花顺扶摇API · 腾讯行情 · <span id="updated"></span> 生成 · AI Agent 自动维护 · 仅供参考非投资建议</div>
+<div class="main">
+
+<section>
+  <h2 class="sec">市场总览 <span id="mdate" style="font-size:12px;color:var(--text2)"></span></h2>
+  <div class="idxbar" id="overview"></div>
+</section>
+
+<section>
+  <h2 class="sec">行业轮动热力图 <span style="font-size:12px;color:var(--text2)">颜色深浅=涨跌幅大小</span></h2>
+  <div class="heatmap" id="heatmap"></div>
+</section>
+
+<section>
+  <div class="duo">
+    <div class="panel"><h3>🔥 今日领涨行业 TOP8（含昨日排名变化）</h3><div id="topup"></div></div>
+    <div class="panel"><h3>❄️ 今日领跌行业 TOP8</h3><div id="topdown"></div></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec">上市 / 退市监测 <span style="font-size:12px;color:var(--text2)" id="ipoPrev"></span></h2>
+  <div class="ipo-grid" id="ipo"></div>
+</section>
+
+<section>
+  <h2 class="sec">行业龙头 TOP5 全景 <span style="font-size:12px;color:var(--text2)">点击展开</span></h2>
+  <div class="controls" style="margin-bottom:10px"><input id="search" placeholder="🔍 搜索行业 / 股票 / 代码" style="width:230px">
+  <select id="sortby">
+    <option value="mcap">按行业总市值</option>
+    <option value="lead_chg">按龙头今日涨跌</option>
+    <option value="name">按行业名称</option>
+  </select></div>
+  <div id="list"></div>
+</section>
+
+</div>
+<div class="footer">数据: 同花顺扶摇API · 腾讯行情 · <span id="updated"></span> 生成 · 每日收盘后自动更新 · AI Agent 维护 · 非投资建议</div>
 <script>
-let DATA=null;
+let MARKET=null, DATA=null;
 const fmtY=v=>v>=10000?(v/10000).toFixed(2)+'万亿':v.toFixed(0)+'亿';
-const cls=v=>v>0?'up':(v<0?'down':'');
+const cls=v=>v>0?'up':(v<0?'down':'flat');
 const sgn=v=>(v>0?'+':'')+v.toFixed(2)+'%';
-async function boot(){
-  const r=await fetch('data.json'); DATA=await r.json();
-  const s=document.getElementById('stats');
-  const up=DATA.industries.filter(i=>i.top5[0].chg>0).length;
-  s.innerHTML=`<div class="stat"><div class="k">一级行业</div><div class="v">${DATA.industries.length}</div></div>
-  <div class="stat"><div class="k">覆盖个股</div><div class="v">${DATA.total_stocks.toLocaleString()}</div></div>
-  <div class="stat"><div class="k">全市场总市值</div><div class="v gold">${fmtY(DATA.industries.reduce((a,b)=>a+b.total_mcap,0))}</div></div>
-  <div class="stat"><div class="k">行业龙头上涨 / 下跌</div><div class="v"><span class="up">${up}</span> / <span class="down">${DATA.industries.length-up}</span></div></div>`;
-  document.getElementById('updated').textContent=DATA.updated;
-  document.getElementById('search').oninput=render;
-  document.getElementById('sortby').onchange=render;
-  render();
+function heatColor(v){
+  if(v>0){const a=Math.min(Math.abs(v)/4,1)*0.75+0.12;return `rgba(255,91,91,${a})`}
+  if(v<0){const a=Math.min(Math.abs(v)/4,1)*0.75+0.12;return `rgba(61,214,140,${a})`}
+  return 'rgba(139,150,171,0.15)';
 }
-function render(){
+async function boot(){
+  const [rm, rd] = await Promise.all([fetch('market.json'), fetch('data.json').catch(()=>null)]);
+  MARKET = await rm.json();
+  if(rd && rd.ok){ try{ DATA = await rd.json(); }catch(e){} }
+  document.getElementById('updated').textContent = MARKET.generated;
+  document.getElementById('mdate').textContent = MARKET.date;
+  renderOverview(); renderHeatmap(); renderRotation(); renderIPO(); renderList();
+  document.getElementById('search').oninput=renderList;
+  document.getElementById('sortby').onchange=renderList;
+}
+function renderOverview(){
+  const b=MARKET.breadth, L=MARKET.limit;
+  let h = MARKET.indices.map(i=>`<div class="idx"><div class="k">${i.name}</div>
+    <div class="v">${i.close.toFixed(2)}</div><div class="c ${cls(i.chg)}">${sgn(i.chg)}</div></div>`).join('');
+  h+=`<div class="idx"><div class="k">涨 / 跌 / 平</div><div class="v"><span class="up">${b.up}</span> / <span class="down">${b.down}</span> / <span class="flat">${b.flat}</span></div>
+    <div class="c flat" style="font-size:12px">上涨占比 ${(b.up/(b.up+b.down+b.flat)*100).toFixed(0)}%</div></div>`;
+  if(L.up!==null) h+=`<div class="idx"><div class="k">涨停 / 跌停</div><div class="v"><span class="up">${L.up??'-'}</span> / <span class="down">${L.down??'-'}</span></div></div>`;
+  if(DATA) h+=`<div class="idx"><div class="k">覆盖个股 / 总市值</div><div class="v" style="font-size:16px">${DATA.total_stocks.toLocaleString()}只</div>
+    <div class="c gold" style="color:var(--gold)">${fmtY(DATA.industries.reduce((a,b)=>a+b.total_mcap,0))}</div></div>`;
+  document.getElementById('overview').innerHTML=h;
+}
+function renderHeatmap(){
+  document.getElementById('heatmap').innerHTML = MARKET.industries.map(ind=>
+    `<div class="cell" style="background:${heatColor(ind.chg)}" title="${ind.name} ${sgn(ind.chg)} | 上涨占比${ind.up_ratio}%">
+     <div class="n">${ind.name}</div><div class="v ${cls(ind.chg)}">${sgn(ind.chg)}</div></div>`).join('');
+}
+function renderRotation(){
+  const mk=(ind)=>{
+    let rc='';
+    if(ind.rank_chg!==null && ind.rank_chg!==undefined && ind.rank_chg!==0)
+      rc=`<span class="rc ${ind.rank_chg>0?'uprank':'downrank'}">${ind.rank_chg>0?'↑':'↓'}${Math.abs(ind.rank_chg)}</span>`;
+    else if(ind.rank_chg===0) rc='<span class="rc" style="background:var(--card2);color:var(--text2)">–</span>';
+    return `<div class="row"><span class="nm"><span class="rk">${ind.rank}</span>${ind.name} ${rc}</span>
+      <span class="${cls(ind.chg)} sgn">${sgn(ind.chg)}</span></div>`;
+  };
+  document.getElementById('topup').innerHTML = MARKET.industries.slice(0,8).map(mk).join('');
+  document.getElementById('topdown').innerHTML = MARKET.industries.slice(-8).reverse().map(mk).join('');
+}
+function renderIPO(){
+  const ip = MARKET.ipo_delist;
+  document.getElementById('ipoPrev').textContent = ip.prev_date ? `对比 ${ip.prev_date}` : '首日基线, 次日起显示变化';
+  const sec=(title,arr,count,empty,fmt)=>`<div class="panel"><h3>${title} (${count})</h3>
+    ${(count===0||!arr.length)?`<div class="empty">${empty}</div>`:arr.map(fmt).join('')}</div>`;
+  document.getElementById('ipo').innerHTML =
+    sec('🆕 新上市', ip.new, ip.new_count, '无新上市', x=>`<span class="chip"><b>${x.name}</b>${x.code}</span>`) +
+    sec('🚪 退市/终止', ip.delist, ip.delist_count, '无退市', x=>`<span class="chip"><b>${x.name}</b>${x.code}</span>`) +
+    sec('✏️ 名称变更(摘帽/戴帽/更名)', ip.renames, ip.rename_count, '无变更',
+        x=>`<span class="chip"><b>${x.old}</b> → ${x.new} <span style="color:var(--text2)">${x.code}</span></span>`);
+}
+function renderList(){
+  if(!DATA) return;
   const q=document.getElementById('search').value.trim().toLowerCase();
   const sb=document.getElementById('sortby').value;
   let list=DATA.industries.filter(ind=>{
@@ -95,28 +192,25 @@ function render(){
   if(sb==='mcap')list.sort((a,b)=>b.total_mcap-a.total_mcap);
   else if(sb==='lead_chg')list.sort((a,b)=>b.top5[0].chg-a.top5[0].chg);
   else list.sort((a,b)=>a.name.localeCompare(b.name,'zh'));
-  const el=document.getElementById('list');
-  el.innerHTML=list.map((ind,idx)=>{
+  document.getElementById('list').innerHTML=list.map((ind,idx)=>{
     const lead=ind.top5[0];
     return `<div class="ind-card">
     <div class="ind-head" onclick="this.parentElement.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">
       <div class="ind-title"><span class="rank">#${idx+1}</span>${ind.name}<span class="arrow">▶</span></div>
       <div class="ind-meta">
-        <span class="badge n">${ind.count} 只</span>
+        <span class="badge">${ind.count} 只</span>
         <span>总市值 <b>${fmtY(ind.total_mcap)}</b></span>
-        <span>龙头 <b>${lead.name}</b> <b class="${cls(lead.chg)}">${sgn(lead.chg)}</b></span>
+        <span>龙头 <b>${lead.name}</b> ${lead.price.toFixed(2)} <b class="${cls(lead.chg)}">${sgn(lead.chg)}</b></span>
       </div>
     </div>
     <div class="hidden">
-      <table><thead><tr><th>代码</th><th>名称</th><th>现价</th><th>今日涨跌</th><th>总市值</th><th>行业地位</th></tr></thead>
+      <table><thead><tr><th>代码</th><th>名称</th><th>现价</th><th>今日涨跌</th><th>总市值</th><th>地位</th></tr></thead>
       <tbody>${ind.top5.map((s,i)=>`<tr>
         <td class="l">${s.code}</td><td class="l"><b>${s.name}</b></td>
-        <td>${s.price.toFixed(2)}</td>
-        <td class="${cls(s.chg)}">${sgn(s.chg)}</td>
-        <td>${fmtY(s.mcap)}</td>
-        <td>${['🥇 龙头','🥈','🥉','4','5'][i]}</td></tr>`).join('')}</tbody></table>
+        <td>${s.price.toFixed(2)}</td><td class="${cls(s.chg)}">${sgn(s.chg)}</td>
+        <td>${fmtY(s.mcap)}</td><td>${['🥇 龙头','🥈','🥉','4','5'][i]}</td></tr>`).join('')}</tbody></table>
     </div></div>`;
-  }).join('')||'<div style="text-align:center;padding:60px;color:var(--text2)">无匹配行业</div>';
+  }).join('')||'<div style="text-align:center;padding:60px;color:var(--text2)">无匹配</div>';
 }
 boot();
 </script>
