@@ -87,6 +87,18 @@ tr:hover td{background:var(--card2)}
 <div class="main">
 
 <section>
+  <h2 class="sec">📈 大盘每日趋势 <span style="font-size:12px;color:var(--text2)" id="trendMeta"></span></h2>
+  <div class="duo" style="margin-bottom:12px">
+    <div class="panel"><h3>上证指数收盘</h3><div id="chartSH"></div></div>
+    <div class="panel"><h3>沪深300收盘</h3><div id="chartHS300"></div></div>
+  </div>
+  <div class="panel" style="margin-bottom:12px">
+    <h3>每日市场宽度（红=上涨家数 绿=下跌家数）</h3><div id="breadthBars"></div>
+  </div>
+  <div class="panel"><h3>每日领涨行业记录</h3><div id="topUpLog"></div></div>
+</section>
+
+<section>
   <h2 class="sec">市场总览 <span id="mdate" style="font-size:12px;color:var(--text2)"></span></h2>
   <div class="idxbar" id="overview"></div>
 </section>
@@ -132,14 +144,65 @@ function heatColor(v){
   return 'rgba(139,150,171,0.15)';
 }
 async function boot(){
-  const [rm, rd] = await Promise.all([fetch('market.json'), fetch('data.json').catch(()=>null)]);
+  const [rm, rd, rs] = await Promise.all([
+    fetch('market.json'),
+    fetch('data.json').catch(()=>null),
+    fetch('daily_summary.json').catch(()=>null)
+  ]);
   MARKET = await rm.json();
   if(rd && rd.ok){ try{ DATA = await rd.json(); }catch(e){} }
+  let SUMMARY=null;
+  if(rs && rs.ok){ try{ SUMMARY = await rs.json(); }catch(e){} }
   document.getElementById('updated').textContent = MARKET.generated;
   document.getElementById('mdate').textContent = MARKET.date;
   renderOverview(); renderHeatmap(); renderRotation(); renderIPO(); renderList();
+  if(SUMMARY && SUMMARY.days && SUMMARY.days.length){ renderTrend(SUMMARY); }
   document.getElementById('search').oninput=renderList;
   document.getElementById('sortby').onchange=renderList;
+}
+function lineSVG(days, key, color){
+  const vals = days.map(d=>d.indices[key]).filter(v=>v!==undefined);
+  if(vals.length<1) return '<div class="empty">数据累积中…</div>';
+  const W=560,H=140,P=30;
+  const lo=Math.min(...vals)*0.998, hi=Math.max(...vals)*1.002;
+  const xs=i=>P+i/(Math.max(vals.length-1,1))*(W-P-10);
+  const ys=v=>H-20-(v-lo)/(hi-lo||1)*(H-40);
+  const pts=vals.map((v,i)=>`${xs(i)},${ys(v)}`).join(' ');
+  const first=vals[0], last=vals[vals.length-1];
+  const col=last>=first?'var(--up)':'var(--down)';
+  const area=`${P},${H-20} ${pts} ${xs(vals.length-1)},${H-20}`;
+  const labels=days.map(d=>d.date).filter((_,i)=>days[i].indices[key]!==undefined);
+  const t0=labels[0], tN=labels[labels.length-1];
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%">
+    <polyline points="${area}" fill="${col}" opacity="0.12"/>
+    <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2"/>
+    ${vals.map((v,i)=>`<circle cx="${xs(i)}" cy="${ys(v)}" r="2.5" fill="${col}">${labels[i]}: ${v.toFixed(2)}</circle>`).join('')}
+    <text x="${P}" y="${ys(first)+14}" font-size="10" fill="var(--text2)">${first.toFixed(0)} · ${t0}</text>
+    <text x="${W-10}" y="${ys(last)-6}" font-size="10" fill="${col}" text-anchor="end">${last.toFixed(0)} · ${tN}</text>
+  </svg>`;
+}
+function renderTrend(S){
+  const days=S.days;
+  document.getElementById('trendMeta').textContent=`已累积 ${days.length} 天 (自 ${days[0].date})`;
+  document.getElementById('chartSH').innerHTML=lineSVG(days,'上证指数');
+  document.getElementById('chartHS300').innerHTML=lineSVG(days,'沪深300');
+  const mx=Math.max(...days.map(d=>Math.max(d.breadth.up,d.breadth.down)),1);
+  document.getElementById('breadthBars').innerHTML=days.slice().reverse().map(d=>{
+    const b=d.breadth, tot=Math.max(b.up+b.down+b.flat,1);
+    return `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:11px">
+      <span style="width:76px;color:var(--text2)">${d.date.slice(5)}</span>
+      <div style="flex:1;display:flex;height:14px;border-radius:4px;overflow:hidden">
+        <div style="width:${b.up/tot*100}%;background:var(--up)" title="涨${b.up}"></div>
+        <div style="width:${b.down/tot*100}%;background:var(--down)" title="跌${b.down}"></div>
+        <div style="width:${b.flat/tot*100}%;background:var(--card2)"></div>
+      </div>
+      <span style="width:110px;text-align:right"><span class="up">${b.up}</span>/<span class="down">${b.down}</span>
+      ${d.limit&&d.limit.up!==null&&d.limit.up!==undefined?`<span style="color:var(--text2)"> 涨停${d.limit.up}</span>`:''}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('topUpLog').innerHTML=days.slice().reverse().map(d=>
+    `<div class="row"><span class="nm"><span class="rk">${d.date.slice(5)}</span>${d.top_up?d.top_up.name:'-'}</span>
+     <span class="${d.top_up?cls(d.top_up.chg):''} sgn">${d.top_up?sgn(d.top_up.chg):'-'}</span></div>`).join('');
 }
 function renderOverview(){
   const b=MARKET.breadth, L=MARKET.limit;

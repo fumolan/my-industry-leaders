@@ -44,6 +44,36 @@ def tencent_batch(codes):
         time.sleep(0.18)
     return out
 
+def build_summary():
+    """遍历 history/*.json, 提取每日摘要 → daily_summary.json (网页趋势图用)"""
+    hist_dir = os.path.join(REPO, "history")
+    days = []
+    for f in sorted(os.listdir(hist_dir)):
+        if not f.endswith(".json"):
+            continue
+        try:
+            d = json.load(open(os.path.join(hist_dir, f)))
+            idx = {i["name"]: {"close": i["close"], "chg": i["chg"]} for i in d.get("indices", [])}
+            b = d.get("breadth", {})
+            L = d.get("limit", {}) or {}
+            inds = d.get("industries", [])
+            top_up = inds[0] if inds else None
+            top_dn = inds[-1] if inds else None
+            days.append({
+                "date": d.get("date", f[:10]),
+                "indices": {k: v["close"] for k, v in idx.items()},
+                "breadth": {"up": b.get("up", 0), "down": b.get("down", 0), "flat": b.get("flat", 0)},
+                "limit": {"up": L.get("up"), "down": L.get("down")},
+                "top_up": {"name": top_up["name"], "chg": top_up["chg"]} if top_up else None,
+                "top_down": {"name": top_dn["name"], "chg": top_dn["chg"]} if top_dn else None,
+            })
+        except Exception as e:
+            print(f"  [WARN] 摘要跳过 {f}: {str(e)[:40]}")
+    out = {"updated": datetime.now().strftime("%Y-%m-%d %H:%M"), "days": days}
+    with open(os.path.join(REPO, "daily_summary.json"), "w") as f:
+        json.dump(out, f, ensure_ascii=False)
+    print(f"✅ daily_summary.json: {len(days)} 天历史")
+
 def main():
     today = datetime.now().strftime("%Y-%m-%d")
     hist_dir = os.path.join(REPO, "history")
@@ -171,6 +201,10 @@ def main():
         if f_[:10] < cutoff:
             os.remove(os.path.join(hist_dir, f_))
     print(f"✅ market.json + history/{today}.json 已生成")
+    build_summary()
 
 if __name__ == "__main__":
-    main()
+    if "--summary-only" in sys.argv:
+        build_summary()
+    else:
+        main()
