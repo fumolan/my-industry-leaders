@@ -61,3 +61,99 @@ Traceback (most recent call last):
   File "/usr/lib64/python3.9/urllib/request.py", line 641, in http_error_default
     raise HTTPError(req.full_url, code, msg, hdrs, fp)
 urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+=== 市场地图更新 2026-09-17 ===
+Traceback (most recent call last):
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 210, in <module>
+    main()
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 86, in main
+    d = fuyao(f"/api/meta/tickers/list?asset_type=a-share&limit=1000&offset={offset}")
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 21, in fuyao
+    return json.loads(ur.urlopen(req, timeout=20).read())
+  File "/usr/lib64/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib64/python3.9/urllib/request.py", line 523, in open
+    response = meth(req, response)
+  File "/usr/lib64/python3.9/urllib/request.py", line 632, in http_response
+    response = self.parent.error(
+  File "/usr/lib64/python3.9/urllib/request.py", line 561, in error
+    return self._call_chain(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+=== 市场地图更新 2026-09-18 ===
+Traceback (most recent call last):
+  File "/usr/lib64/python3.9/urllib/request.py", line 1346, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib64/python3.9/http/client.py", line 1285, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib64/python3.9/http/client.py", line 1331, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib64/python3.9/http/client.py", line 1280, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib64/python3.9/http/client.py", line 1040, in _send_output
+    self.send(msg)
+  File "/usr/lib64/python3.9/http/client.py", line 980, in send
+    self.connect()
+  File "/usr/lib64/python3.9/http/client.py", line 1454, in connect
+    self.sock = self._context.wrap_socket(self.sock,
+  File "/usr/lib64/python3.9/ssl.py", line 501, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/usr/lib64/python3.9/ssl.py", line 1076, in _create
+    self.do_handshake()
+  File "/usr/lib64/python3.9/ssl.py", line 1345, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:1147)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 210, in <module>
+    main()
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 86, in main
+    d = fuyao(f"/api/meta/tickers/list?asset_type=a-share&limit=1000&offset={offset}")
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 21, in fuyao
+    return json.loads(ur.urlopen(req, timeout=20).read())
+  File "/usr/lib64/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib64/python3.9/urllib/request.py", line 517, in open
+    response = self._open(req, data)
+  File "/usr/lib64/python3.9/urllib/request.py", line 534, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib64/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 1389, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+  File "/usr/lib64/python3.9/urllib/request.py", line 1349, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:1147)>
+=== 市场地图更新 2026-09-21 ===
+Traceback (most recent call last):
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 210, in <module>
+    main()
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 86, in main
+    d = fuyao(f"/api/meta/tickers/list?asset_type=a-share&limit=1000&offset={offset}")
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 21, in fuyao
+    return json.loads(ur.urlopen(req, timeout=20).read())
+  File "/usr/lib64/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib64/python3.9/urllib/request.py", line 523, in open
+    response = meth(req, response)
+  File "/usr/lib64/python3.9/urllib/request.py", line 632, in http_response
+    response = self.parent.error(
+  File "/usr/lib64/python3.9/urllib/request.py", line 561, in error
+    return self._call_chain(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+=== 市场地图更新 2026-09-22 ===
+全市场代码表: 5576只
+对比2026-09-13: 新上市5 退市0 改名30
+行业指数: 90个 | 今日领涨: 文化传媒+3.15% 领跌: 港口航运-1.89%
+成分股行情: 5562只
+指数: [('上证指数', 0.06), ('深证成指', -0.05), ('创业板指', 0.01), ('沪深300', 0.11)] | 涨停0 跌停0 | 涨2371 跌3027
+✅ market.json + history/2026-09-22.json 已生成
+✅ daily_summary.json: 2 天历史
