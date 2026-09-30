@@ -189,3 +189,36 @@ urllib.error.HTTPError: HTTP Error 429: Too Many Requests
 指数: [('上证指数', -1.67), ('深证成指', -3.44), ('创业板指', -4.53), ('沪深300', -2.22)] | 涨停0 跌停0 | 涨896 跌4549
 ✅ market.json + history/2026-09-28.json 已生成
 ✅ daily_summary.json: 6 天历史
+=== 市场地图更新 2026-09-29 ===
+全市场代码表: 5578只
+对比2026-09-28: 新上市0 退市0 改名35
+行业指数: 90个 | 今日领涨: 元件+4.42% 领跌: 种植业与林业-0.93%
+成分股行情: 5562只
+Traceback (most recent call last):
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 210, in <module>
+    main()
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 169, in main
+    d = fuyao(f"/api/a-share-index/prices/snapshot?thscodes={','.join(IDX)}")
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 21, in fuyao
+    return json.loads(ur.urlopen(req, timeout=20).read())
+  File "/usr/lib64/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib64/python3.9/urllib/request.py", line 523, in open
+    response = meth(req, response)
+  File "/usr/lib64/python3.9/urllib/request.py", line 632, in http_response
+    response = self.parent.error(
+  File "/usr/lib64/python3.9/urllib/request.py", line 561, in error
+    return self._call_chain(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+=== 市场地图更新 2026-09-30 ===
+全市场代码表: 5578只
+对比2026-09-28: 新上市1 退市1 改名47
+行业指数: 90个 | 今日领涨: 生物制品+4.63% 领跌: 元件-4.03%
+成分股行情: 5562只
+指数: [('上证指数', 0.31), ('深证成指', -0.11), ('创业板指', -0.23), ('沪深300', 0.29)] | 涨停0 跌停0 | 涨2564 跌2817
+✅ market.json + history/2026-09-30.json 已生成
+✅ daily_summary.json: 7 天历史
