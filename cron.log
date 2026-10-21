@@ -327,3 +327,57 @@ urllib.error.HTTPError: HTTP Error 429: Too Many Requests
 指数: [('上证指数', -1.59), ('深证成指', -2.43), ('创业板指', -2.92), ('沪深300', -1.23)] | 涨停None 跌停None | 涨425 跌5099
 ✅ market.json + history/2026-10-15.json 已生成
 ✅ daily_summary.json: 16 天历史
+=== 市场地图更新 2026-10-16 ===
+全市场代码表: 5580只
+对比2026-10-15: 新上市0 退市0 改名50
+行业指数: 90个 | 今日领涨: 军工装备+5.61% 领跌: 元件-3.83%
+成分股行情: 5562只
+Traceback (most recent call last):
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 210, in <module>
+    main()
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 169, in main
+    d = fuyao(f"/api/a-share-index/prices/snapshot?thscodes={','.join(IDX)}")
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 21, in fuyao
+    return json.loads(ur.urlopen(req, timeout=20).read())
+  File "/usr/lib64/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib64/python3.9/urllib/request.py", line 523, in open
+    response = meth(req, response)
+  File "/usr/lib64/python3.9/urllib/request.py", line 632, in http_response
+    response = self.parent.error(
+  File "/usr/lib64/python3.9/urllib/request.py", line 561, in error
+    return self._call_chain(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+=== 市场地图更新 2026-10-19 ===
+Traceback (most recent call last):
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 210, in <module>
+    main()
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 86, in main
+    d = fuyao(f"/api/meta/tickers/list?asset_type=a-share&limit=1000&offset={offset}")
+  File "/home/fumolan/github/my-industry-leaders/scripts/update_market.py", line 21, in fuyao
+    return json.loads(ur.urlopen(req, timeout=20).read())
+  File "/usr/lib64/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib64/python3.9/urllib/request.py", line 523, in open
+    response = meth(req, response)
+  File "/usr/lib64/python3.9/urllib/request.py", line 632, in http_response
+    response = self.parent.error(
+  File "/usr/lib64/python3.9/urllib/request.py", line 561, in error
+    return self._call_chain(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/usr/lib64/python3.9/urllib/request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+=== 市场地图更新 2026-10-21 ===
+全市场代码表: 5580只
+对比2026-10-15: 新上市2 退市2 改名34
+行业指数: 90个 | 今日领涨: 文化传媒+2.10% 领跌: 电池-3.42%
+成分股行情: 5562只
+指数: [('上证指数', -0.6), ('深证成指', -0.82), ('创业板指', -1.62), ('沪深300', -0.97)] | 涨停None 跌停None | 涨1975 跌3354
+✅ market.json + history/2026-10-21.json 已生成
+✅ daily_summary.json: 17 天历史
